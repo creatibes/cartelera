@@ -1,0 +1,1569 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-deep: #070a11;
+  --bg-card: #0d1322;
+  --bg-card-hover: #131b2e;
+  --bg-subtle: rgba(255, 255, 255, 0.03);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --border-bright: rgba(255, 255, 255, 0.18);
+  
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  
+  --gold-num: #fbbf24;
+  --gold-glow: rgba(251, 191, 36, 0.25);
+  --green-win: #10b981;
+  --green-glow: rgba(16, 185, 129, 0.2);
+  --cyan-accent: #06b6d4;
+  --red-accent: #ef4444;
+  --amber-accent: #f59e0b;
+
+  --font-condensed: 'Barlow Condensed', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Inter', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Base App Container - Strict 100vh Zero-Scroll */
+.billboard-app {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+  gap: 0.4rem;
+  background: radial-gradient(circle at 50% 0%, #111a2f 0%, #070a11 75%);
+}
+
+/* ==========================================================================
+   TOP HEADER (Agencia, Reloj En Vivo, Barra de Acciones Rápidas)
+   ========================================================================== */
+.billboard-header {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
+  padding: 0.35rem 0.85rem 0.35rem 0.85rem;
+  gap: 0.3rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.header-main-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.header-tools-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.25rem;
+  width: 100%;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-badge {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #000;
+  font-family: var(--font-condensed);
+  font-size: 0.95rem;
+  font-weight: 900;
+  padding: 0.2rem 0.55rem;
+  border-radius: 5px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+}
+
+.brand-title {
+  font-family: var(--font-condensed);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-title span.sub {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+}
+
+/* Reloj, Créditos y Fecha */
+.clock-section {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+/* Tasa Oficial BCV */
+.header-bcv-rate {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  padding: 0.2rem 0.65rem;
+  border-radius: 20px;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: #e2e8f0;
+  letter-spacing: 0.2px;
+  user-select: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.header-bcv-rate:hover {
+  background: rgba(34, 197, 94, 0.16);
+  border-color: rgba(34, 197, 94, 0.5);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.25);
+}
+
+.header-bcv-rate .bcv-icon {
+  font-size: 0.9rem;
+}
+
+.header-bcv-rate .bcv-label {
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.header-bcv-rate .bcv-val {
+  font-family: var(--font-mono);
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #4ade80;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
+}
+
+/* Crédito de Software Sutil */
+.header-dev-credit {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.3px;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.header-dev-credit:hover {
+  background: rgba(56, 189, 248, 0.08);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: #e2e8f0;
+}
+
+.header-dev-credit .dev-phone {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #38bdf8;
+  letter-spacing: 0.5px;
+}
+
+.live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--green-win);
+  text-transform: uppercase;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--green-win);
+  border-radius: 50%;
+  animation: pulse-dot 1.5s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.9); opacity: 0.7; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.9); opacity: 0.7; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.date-display {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: capitalize;
+}
+
+.clock-display {
+  font-family: var(--font-mono);
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--gold-num);
+  text-shadow: 0 0 10px var(--gold-glow);
+  letter-spacing: 1px;
+}
+
+/* Barra de Botones Superiores */
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  padding: 0.22rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-color: var(--border-bright);
+}
+
+.action-btn.active {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--gold-num);
+  border-color: var(--amber-accent);
+}
+
+.action-btn.admin-btn {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.3);
+  color: #60a5fa;
+}
+
+/* Nombre de Agencia editable */
+#brand-title-clickable {
+  cursor: pointer;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+#brand-title-clickable:hover {
+  opacity: 0.85;
+}
+
+.edit-badge-icon {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+#brand-title-clickable:hover .edit-badge-icon {
+  opacity: 1;
+}
+
+/* Selector y Navegación de Fechas */
+.date-nav-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-card);
+  padding: 0.15rem 0.35rem;
+  border-radius: 6px;
+  position: relative;
+}
+
+.date-nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  padding: 0.2rem 0.45rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  z-index: 3;
+}
+
+.date-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* Botón contenedor del calendario (ultra sensible a clics) */
+.date-picker-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.18rem 0.6rem;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.date-picker-container:hover {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+}
+
+.date-picker-container .cal-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+  pointer-events: none;
+  transition: transform 0.15s ease;
+}
+
+.date-picker-container:hover .cal-icon {
+  transform: scale(1.15);
+}
+
+.date-display {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #38bdf8;
+  white-space: nowrap;
+  pointer-events: none;
+  letter-spacing: -0.2px;
+}
+
+/* Input nativo que cubre exactamente el botón para responder a cualquier clic */
+.history-date-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+/* Expande el indicador de calendario de Chrome/Edge al 100% del botón */
+.history-date-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.date-today-btn {
+  background: #f59e0b;
+  color: #000;
+  border: none;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: background 0.15s;
+}
+
+.date-today-btn:hover {
+  background: #fbbf24;
+}
+
+/* BARRA COMPACTA MINIMALISTA (FECHA Y HORA JUNTAS) */
+.compact-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #090e17;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 0.2rem 0.75rem;
+  min-height: 28px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-sans);
+}
+
+.compact-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.compact-agency {
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #f59e0b;
+  font-family: var(--font-condensed);
+  letter-spacing: 0.5px;
+}
+
+.compact-divider {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
+.compact-datetime {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.compact-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.compact-bcv-rate {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  padding: 0.12rem 0.6rem;
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  color: #94a3b8;
+  letter-spacing: 0.2px;
+}
+
+.compact-bcv-rate .bcv-val {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  color: #4ade80;
+}
+
+.compact-dev-credit {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.12rem 0.6rem;
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.3px;
+}
+
+.compact-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.compact-live-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--green-win);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.compact-restore-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #e2e8f0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.compact-restore-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+/* Modo barra oculta: cambia visibilidad y ajusta la altura de la pizarra */
+.billboard-app.header-hidden #main-billboard-header {
+  display: none !important;
+}
+
+.billboard-app.header-hidden #compact-header-bar {
+  display: flex !important;
+}
+
+.billboard-app.header-hidden .billboard-content {
+  height: calc(100vh - 42px) !important;
+}
+
+/* Badge de Modo Histórico */
+.live-indicator.historical {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #f59e0b;
+}
+
+.live-dot.historical {
+  background-color: #f59e0b;
+  animation: none;
+}
+
+/* ==========================================================================
+   MAIN DASHBOARD LAYOUT (ZERO-SCROLL VIEWPORT)
+   ========================================================================== */
+.billboard-content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 34% 66%;
+  gap: 0.5rem;
+  min-height: 0; /* Previene desbordamiento flex */
+  height: calc(100vh - 86px);
+}
+
+/* Panel Izquierdo: Triples Tradicionales */
+.panel-triples {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.75rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid var(--border-card);
+}
+
+.panel-title {
+  font-family: var(--font-condensed);
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.panel-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.triples-cards-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  padding: 0.25rem;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Tarjeta individual de cada Triple */
+.triple-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-card);
+  border-radius: 6px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.triple-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.12rem 0.5rem;
+  border-left: 4px solid var(--gold-num);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.triple-name {
+  font-family: var(--font-condensed);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.triple-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+/* Tabla interna de sorteos de Triples */
+.triple-grid {
+  flex: 1;
+  display: grid;
+  grid-template-rows: auto repeat(3, 1fr);
+  width: 100%;
+  font-size: 0.74rem;
+}
+
+.triple-grid-header {
+  display: grid;
+  grid-template-columns: 86px 1fr 1fr 1.25fr;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.1rem 0.35rem;
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.triple-row {
+  display: grid;
+  grid-template-columns: 86px 1fr 1fr 1.25fr;
+  align-items: center;
+  padding: 0.05rem 0.35rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.triple-row:last-child {
+  border-bottom: none;
+}
+
+.draw-time {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #38bdf8;
+  font-size: 0.82rem;
+  text-align: left;
+  white-space: nowrap;
+  letter-spacing: -0.2px;
+}
+
+.draw-val {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  padding: 0.05rem;
+  border-radius: 4px;
+  transition: all 0.1s ease;
+}
+
+.draw-val:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--gold-num);
+}
+
+.draw-val.empty {
+  color: var(--text-dim);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.draw-val.no-juega,
+.chance-val-cell.no-juega,
+.chance-astral-cell.no-juega span {
+  color: #64748b !important;
+  opacity: 0.55;
+  font-size: 0.82rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 1px;
+}
+
+.draw-val.signo {
+  color: #fcd34d;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+/* Triple Zamorano (layout de 2 columnas amplias y 4 sorteos) */
+.zamorano-grid {
+  grid-template-rows: auto repeat(4, 1fr);
+}
+.zamorano-grid .triple-grid-header {
+  grid-template-columns: 86px 1.1fr 1.5fr;
+}
+.zamorano-grid .triple-row {
+  grid-template-columns: 86px 1.1fr 1.5fr;
+}
+
+/* ==========================================================================
+   PANEL DERECHO: ANIMALITOS Y RULETAS (MATRIZ 8AM A 7PM)
+   ========================================================================== */
+.panel-animalitos {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.animalitos-table-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0.35rem;
+}
+
+.animalitos-grid {
+  flex: 1;
+  display: grid;
+  /* 1 fila de cabecera + 12 filas de horarios (8am a 7pm) con altura estrictamente bloqueada */
+  grid-template-rows: 28px repeat(12, minmax(0, 1fr));
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.animalitos-grid-header {
+  display: grid;
+  grid-template-columns: 65px repeat(11, 1fr);
+  background: #090e18;
+  border-bottom: 2px solid var(--border-bright);
+  font-family: var(--font-condensed);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  align-items: center;
+  text-align: center;
+}
+
+.grid-col-title {
+  padding: 0.2rem 0.1rem;
+  font-size: 0.88rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.grid-col-title.hour-col {
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+/* Filas de horas (8am a 7pm) */
+.animalitos-row {
+  display: grid;
+  grid-template-columns: 65px repeat(11, 1fr);
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.animalitos-row:nth-child(even) {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.animalitos-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.hour-cell {
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: #38bdf8;
+  text-align: center;
+  padding: 0.1rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.number-cell {
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.05rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.number-cell:hover {
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.number-cell .val {
+  font-family: var(--font-mono);
+  font-size: 1.34rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.05;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.number-cell .label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.number-cell .animal-label {
+  font-family: var(--font-condensed);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gold-num);
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 95%;
+  letter-spacing: 0.25px;
+}
+
+.number-cell.empty .val {
+  color: rgba(255, 255, 255, 0.15);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.number-cell.no-draw {
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0.4;
+  cursor: pointer;
+}
+
+.number-cell.no-draw:hover {
+  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.no-draw-label {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 1px;
+}
+
+/* Efecto de último resultado cantado */
+.latest-drawn {
+  background: rgba(245, 158, 11, 0.22) !important;
+  border: 1px solid var(--gold-num) !important;
+  box-shadow: 0 0 10px var(--gold-glow);
+  animation: pulse-latest 2s infinite ease-in-out;
+}
+
+@keyframes pulse-latest {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+/* ==========================================================================
+   MODO TV ROTACIÓN (SLIDESHOW EN PANTALLA GIGANTE PARA TELEVISORES)
+   ========================================================================== */
+.tv-rotation-view {
+  display: none;
+  position: absolute;
+  top: 60px;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.5rem;
+  background: var(--bg-deep);
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
+  padding: 1.5rem;
+  flex-direction: column;
+  z-index: 50;
+}
+
+.tv-rotation-view.active {
+  display: flex;
+}
+
+.tv-slide-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--border-bright);
+}
+
+.tv-bcv-rate {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  padding: 0.25rem 0.85rem;
+  border-radius: 20px;
+}
+
+.tv-bcv-rate strong {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  color: #4ade80;
+}
+
+.tv-dev-credit {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+}
+
+.tv-slide-title {
+  font-family: var(--font-condensed);
+  font-size: 2.2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--gold-num);
+  letter-spacing: 1px;
+}
+
+.tv-slide-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+/* Barra de progreso de la rotación */
+.tv-progress-container {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.tv-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #f59e0b, #10b981);
+  transition: width 0.1s linear;
+}
+
+/* ==========================================================================
+   MODAL DE TAQUILLA / GESTOR DE DISCREPANCIAS (F2)
+   ========================================================================== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.admin-modal {
+  background: #0f172a;
+  border: 1px solid var(--border-bright);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 920px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  animation: modal-appear 0.2s ease-out;
+}
+
+@keyframes modal-appear {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-card);
+  background: #0b1120;
+}
+
+.modal-title {
+  font-family: var(--font-condensed);
+  font-size: 1.4rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+}
+
+.close-modal-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+}
+
+.close-modal-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.modal-body {
+  padding: 1.25rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.admin-section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.admin-section-title {
+  font-family: var(--font-condensed);
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #38bdf8;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Formularios de edición rápida */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.form-input, .form-select {
+  background: #090e18;
+  border: 1px solid var(--border-card);
+  color: #fff;
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.form-input:focus, .form-select:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  border: none;
+  font-weight: 700;
+  padding: 0.55rem 1.1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.15s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-danger:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fff;
+}
+
+/* Modal Footer */
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  border-top: 1px solid var(--border-card);
+  background: #0b1120;
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATION (Alerta Flotante Suave)
+   ========================================================================== */
+.toast-notice {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #1e293b;
+  border: 1px solid var(--border-bright);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2000;
+}
+
+.toast-notice.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast-notice.success {
+  border-left: 4px solid var(--green-win);
+}
+
+.toast-notice.info {
+  border-left: 4px solid var(--cyan-accent);
+}
+
+/* ==========================================================================
+   MEDIA QUERIES PARA ADAPTARSE A DIFERENTES MONITORES Y TELEVISORES
+   ========================================================================== */
+@media (max-width: 1400px) {
+  .draw-val { font-size: 0.95rem; }
+  .number-cell .val { font-size: 1rem; }
+  .number-cell .animal-label { font-size: 0.6rem; }
+}
+
+@media (max-height: 800px) {
+  .billboard-app { padding: 0.25rem 0.5rem; gap: 0.25rem; }
+  .billboard-header { min-height: 42px; padding: 0.25rem 0.5rem; }
+  .brand-title { font-size: 1.15rem; }
+  .clock-display { font-size: 1.25rem; }
+  .panel-header { padding: 0.25rem 0.5rem; }
+  .triple-grid-header { padding: 0.1rem 0.25rem; }
+  .triple-row { padding: 0.05rem 0.25rem; }
+  .draw-val { font-size: 0.92rem; }
+  .number-cell .val { font-size: 0.95rem; }
+}
+
+/* ==========================================================================
+   PESTAÑAS Y TABLA DE CHANCE EN LÍNEA (9:00 AM - 7:00 PM)
+   ========================================================================== */
+.triples-panel-header {
+  padding: 0.25rem 0.5rem;
+}
+
+.triples-tab-switcher {
+  display: flex;
+  gap: 0.3rem;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.15rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.triples-tab {
+  font-family: var(--font-condensed);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 0.18rem 0.55rem;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.triples-tab:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.triples-tab.active#tab-triples-clasicos {
+  background: #f59e0b;
+  color: #000;
+  font-weight: 800;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
+}
+
+.triples-tab.active#tab-triples-chance {
+  background: #f97316;
+  color: #fff;
+  font-weight: 800;
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.4);
+}
+
+.tab-badge-orange {
+  background: rgba(249, 115, 22, 0.25);
+  color: #fb923c;
+  font-size: 0.68rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+  font-weight: 800;
+  border: 1px solid rgba(249, 115, 22, 0.4);
+}
+
+.triples-tab.active#tab-triples-chance .tab-badge-orange {
+  background: #fff;
+  color: #c2410c;
+  border-color: #fff;
+}
+
+.triples-auto-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.triples-auto-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-muted);
+  font-family: var(--font-condensed);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.18rem 0.55rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.triples-auto-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.triples-auto-btn.active {
+  background: rgba(34, 197, 94, 0.18);
+  border-color: rgba(34, 197, 94, 0.6);
+  color: #4ade80;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.25);
+}
+
+.auto-sec-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.05rem 0.3rem;
+  border-radius: 3px;
+  color: #fef08a;
+  letter-spacing: -0.2px;
+}
+
+.triples-gear-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  padding: 0.16rem 0.45rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.triples-gear-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.6);
+  color: #38bdf8;
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+}
+
+/* Acceso directo en tarjeta de Chance clásico */
+.btn-chance-shortcut {
+  font-size: 0.68rem;
+  font-weight: 800;
+  font-family: var(--font-condensed);
+  background: rgba(249, 115, 22, 0.2);
+  border: 1px solid rgba(249, 115, 22, 0.5);
+  color: #fb923c;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-left: auto;
+  margin-right: 0.4rem;
+}
+
+.btn-chance-shortcut:hover {
+  background: #f97316;
+  color: #fff;
+}
+
+/* Contenedor de la Tabla de Chance en Línea */
+.chance-table-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem;
+  gap: 0.15rem;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.chance-table-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, rgba(249, 115, 22, 0.25), rgba(249, 115, 22, 0.05));
+  border-left: 4px solid #f97316;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.chance-banner-title {
+  font-family: var(--font-condensed);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #fb923c;
+  text-transform: uppercase;
+}
+
+.chance-banner-sub {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.chance-grid-header {
+  display: grid;
+  grid-template-columns: 20% 26% 26% 28%;
+  background: rgba(0, 0, 0, 0.45);
+  border-bottom: 2px solid rgba(249, 115, 22, 0.5);
+  padding: 0.2rem 0;
+  border-radius: 4px 4px 0 0;
+}
+
+.chance-col-title {
+  font-family: var(--font-condensed);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-align: center;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+}
+
+.chance-rows-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  min-height: 0;
+}
+
+.chance-row {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 20% 26% 26% 28%;
+  background: var(--bg-subtle);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+  align-items: center;
+  transition: background 0.15s;
+  min-height: 0;
+}
+
+.chance-row:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.chance-row:hover {
+  background: rgba(249, 115, 22, 0.1);
+  border-color: rgba(249, 115, 22, 0.3);
+}
+
+.chance-hour-cell {
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #fb923c;
+  text-align: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  white-space: nowrap;
+}
+
+.chance-val-cell {
+  font-family: var(--font-mono);
+  font-size: 1.34rem;
+  font-weight: 900;
+  text-align: center;
+  color: #fef08a;
+  cursor: pointer;
+  transition: all 0.15s;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chance-val-cell:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.chance-astral-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #38bdf8;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.chance-astral-cell:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.chance-astral-sign {
+  font-size: 0.82rem;
+  font-family: var(--font-condensed);
+  color: #e2e8f0;
+  background: rgba(56, 189, 248, 0.2);
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+  font-weight: 800;
+}

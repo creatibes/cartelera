@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cartelera de Resultados • Agencia de Loterías</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%22%20100%22%20100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
+</head>
+<body>
+
+  <!-- Contenedor Principal de la Cartelera (100vh Zero-Scroll) -->
+  <div class="billboard-app">
+    
+    <!-- BARRA SUPERIOR (HEADER ORGANIZADO) -->
+    <header class="billboard-header" id="main-billboard-header">
+      <!-- FILA PRINCIPAL: IDENTIDAD, NAVEGADOR DE FECHA Y RELOJ -->
+      <div class="header-main-row">
+        <!-- Lado Izquierdo: Identidad de Agencia -->
+        <div class="brand-section">
+          <div class="brand-badge">AGENCIA</div>
+          <div class="brand-title" id="brand-title-clickable" title="Haz clic para cambiar el nombre de la agencia">
+            <span id="agency-name-text">GERÓNIMO EL REY</span>
+            <span class="sub">• RESULTADOS OFICIALES</span>
+            <span class="edit-badge-icon">✏️</span>
+          </div>
+        </div>
+
+        <!-- Centro: Navegador de Fecha Histórica -->
+        <div class="date-nav-wrapper">
+          <button type="button" class="date-nav-btn" id="btn-prev-day" title="Ver día anterior">◀</button>
+          <div class="date-picker-container" id="date-picker-btn" title="Haz clic para abrir el calendario">
+            <span class="cal-icon">📅</span>
+            <span class="date-display" id="clock-date">--</span>
+            <input type="date" id="history-date-picker" class="history-date-input" title="Elegir fecha">
+          </div>
+          <button type="button" class="date-nav-btn" id="btn-next-day" title="Ver día siguiente">▶</button>
+          <button type="button" class="date-today-btn" id="btn-return-today" title="Volver a los resultados de hoy" style="display: none;">☀️ HOY</button>
+        </div>
+
+        <!-- Lado Derecho: Tasa BCV, Créditos de Software, Estado en Vivo y Reloj -->
+        <div class="clock-section">
+          <div class="header-bcv-rate" id="header-bcv-rate" title="Tasa Oficial del Banco Central de Venezuela (Actualización automática)">
+            <span class="bcv-icon">🏛️</span>
+            <span class="bcv-label">Tasa del día:</span>
+            <strong class="bcv-val" id="bcv-rate-display">832,49 Bs.</strong>
+          </div>
+
+          <div class="header-dev-credit" title="Contacto y Soporte: 04145972283">
+            <span class="dev-icon">💻</span> Software: <span class="dev-phone">04145972283</span>
+          </div>
+          <div class="live-indicator" id="live-indicator-badge">
+            <span class="live-dot" id="live-status-badge"></span>
+            <span id="live-status-text">EN VIVO</span>
+          </div>
+          <div class="clock-display" id="clock-time">--:--:-- --</div>
+        </div>
+      </div>
+
+      <!-- FILA DE HERRAMIENTAS: BOTONES DE ACCIÓN LIMPIOS Y ESPACIADOS -->
+      <div class="header-tools-row">
+        <div class="header-actions" id="header-actions">
+          <!-- Renderizado dinámico desde app.js -->
+        </div>
+      </div>
+    </header>
+
+    <!-- BARRA COMPACTA MINIMALISTA (FECHA Y HORA JUNTAS AL ESCONDER BARRA) -->
+    <div class="compact-header-bar" id="compact-header-bar" style="display: none;">
+      <div class="compact-left">
+        <span class="compact-agency" id="compact-agency-name">GERÓNIMO EL REY</span>
+        <span class="compact-divider">•</span>
+        <span class="compact-datetime" id="compact-datetime">--:--:--</span>
+      </div>
+      <div class="compact-center">
+        <span class="compact-bcv-rate" id="compact-bcv-rate" title="Tasa Oficial Banco Central de Venezuela">
+          🏛️ Tasa del día: <strong class="bcv-val" id="compact-bcv-val">832,49 Bs.</strong>
+        </span>
+        <span class="compact-dev-credit">💻 Software: 04145972283</span>
+      </div>
+      <div class="compact-right">
+        <span class="compact-live-badge" id="compact-live-badge">🟢 EN VIVO</span>
+        <button class="compact-restore-btn" id="btn-restore-header" title="Mostrar barra completa y opciones">
+          ⚙️ Mostrar Barra
+        </button>
+      </div>
+    </div>
+
+    <!-- CUERPO PRINCIPAL (ZERO-SCROLL VIEWPORT) -->
+    <main class="billboard-content">
+      
+      <!-- PANEL IZQUIERDO: TRIPLES TRADICIONALES -->
+      <section class="panel-triples">
+        <div class="panel-header triples-panel-header">
+          <div class="triples-tab-switcher">
+            <button type="button" class="triples-tab active" id="tab-triples-clasicos" data-view="clasicos">
+              ⭐ Clásicos (5)
+            </button>
+            <button type="button" class="triples-tab" id="tab-triples-chance" data-view="chance">
+              ⚡ Chance en Línea <span class="tab-badge-orange">9 AM - 7 PM</span>
+            </button>
+          </div>
+          <div class="triples-auto-controls">
+            <button type="button" class="triples-auto-btn active" id="btn-auto-rotate-triples" title="Rotación automática activa. Clic para pausar/reanudar.">
+              🔄 Auto <span class="auto-sec-label" id="auto-sec-label">20s</span>
+            </button>
+            <button type="button" class="triples-gear-btn" id="btn-auto-rotate-config" title="Ajustar tiempo de cambio (segundos)">
+              ⚙️
+            </button>
+          </div>
+        </div>
+        <div class="triples-cards-container" id="triples-container">
+          <!-- Renderizado dinámico de tarjetas de Triples -->
+        </div>
+        <div class="chance-table-container" id="chance-container" style="display: none;">
+          <!-- Renderizado dinámico de la tabla de Chance en Línea (11 horas) -->
+        </div>
+      </section>
+
+      <!-- PANEL DERECHO: ANIMALITOS Y RULETAS (8:00 AM - 7:00 PM) -->
+      <section class="panel-animalitos">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span>🐾</span> ANIMALITOS, RULETAS Y TERMINALES
+          </div>
+          <div class="panel-subtitle">HORARIO CONTINUO 8:00 AM A 7:00 PM</div>
+        </div>
+        <div class="animalitos-table-wrapper" id="animalitos-container">
+          <!-- Renderizado dinámico de la cuadrícula de 12 horas -->
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- OVERLAY DE MODO TV ROTACIÓN (SLIDESHOW DE ALTO IMPACTO) -->
+  <div class="tv-rotation-view" id="tv-rotation-overlay">
+    <div class="tv-slide-header">
+      <div class="tv-slide-title" id="tv-slide-title">--</div>
+      <div class="tv-bcv-rate" id="tv-bcv-rate">🏛️ Tasa del día: <strong id="tv-bcv-val">832,49 Bs.</strong></div>
+      <div class="tv-dev-credit">💻 Software: 04145972283</div>
+      <button class="action-btn" onclick="window.lotteryApp.toggleViewMode()">✕ Salir de Modo TV</button>
+    </div>
+    <div class="tv-slide-content" id="tv-slide-content">
+      <!-- Contenido del Slide Activo -->
+    </div>
+    <div class="tv-progress-container">
+      <div class="tv-progress-bar" id="tv-progress-bar"></div>
+    </div>
+  </div>
+
+  <!-- MODAL DE TAQUILLA / GESTOR DE DISCREPANCIAS (ACCESO DIRECTO F2) -->
+  <div class="modal-overlay" id="admin-modal-overlay">
+    <div class="admin-modal">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>⚙️</span> Panel de Taquilla & Control de Discrepancias
+        </div>
+        <button class="close-modal-btn" id="close-modal-btn">✕</button>
+      </div>
+
+      <div class="modal-body">
+        
+        <!-- SECCIÓN 0: PERSONALIZACIÓN DE AGENCIA -->
+        <div class="admin-section">
+          <div class="admin-section-title">
+            <span>🏷️</span> Nombre de la Agencia / Local
+          </div>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <input type="text" id="input-agency-name" class="form-input" placeholder="Nombre de tu agencia" value="GERÓNIMO EL REY">
+            <button type="button" id="btn-save-agency-name" class="btn-primary" style="white-space: nowrap;">
+              Guardar Nombre
+            </button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN DE LOCUTOR AUTOMÁTICO POR VOZ -->
+        <div class="admin-section">
+          <div class="admin-section-title">
+            <span>🗣️</span> Locutor Automático (Cantar Resultados por Voz)
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.6rem;">
+            Cada vez que salga un resultado nuevo en vivo, una voz natural cantará la lotería, la hora, el número y el animalito o signo zodiacal correspondiente.
+          </p>
+          <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+            <button type="button" id="btn-admin-toggle-voice" class="btn-primary" style="white-space: nowrap;">
+              🗣️ Voz: ACTIVADA
+            </button>
+            <button type="button" id="btn-admin-test-voice" class="action-btn" style="white-space: nowrap;">
+              🔊 Probar Voz Ahora
+            </button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN DE CONSULTA HISTÓRICA -->
+        <div class="admin-section">
+          <div class="admin-section-title">
+            <span>📅</span> Consultar Resultados de Fechas Anteriores
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+            Selecciona cualquier fecha anterior para consultar el histórico de la cartelera:
+          </p>
+          <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+            <input type="date" id="admin-date-picker" class="form-input" style="max-width: 200px;">
+            <button type="button" id="btn-admin-load-date" class="btn-primary" style="white-space: nowrap;">
+              Cargar Fecha
+            </button>
+            <button type="button" id="btn-admin-load-today" class="action-btn" style="white-space: nowrap;">
+              ☀️ Volver a Hoy
+            </button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 1: EDICIÓN RÁPIDA MANUAL -->
+        <div class="admin-section">
+          <div class="admin-section-title">
+            <span>⚡</span> Canto Manual / Corrección Rápida
+          </div>
+          <form id="form-manual-update">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Lotería / Juego</label>
+                <select id="manual-game-select" class="form-select"></select>
+              </div>
+              <div class="form-group">
+                <label>Hora del Sorteo</label>
+                <select id="manual-time-select" class="form-select"></select>
+              </div>
+              <div class="form-group" id="manual-triple-field-group" style="display: none;">
+                <label>Campo</label>
+                <select id="manual-triple-field" class="form-select">
+                  <option value="A">Sorteo A</option>
+                  <option value="B">Sorteo B</option>
+                  <option value="C">C (Signo)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Resultado Ganador</label>
+                <input type="text" id="manual-value-input" class="form-input" placeholder="Ej: 12, 345, 058 Leo" required autocomplete="off">
+              </div>
+              <button type="submit" class="btn-primary">
+                Guardar Resultado
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- SECCIÓN 2: SINCRONIZACIÓN REMOTA CON GITHUB / REPO -->
+        <div class="admin-section">
+          <div class="admin-section-title">
+            <span>🌐</span> Sincronización Remota (GitHub Raw / API / Gist)
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Puedes alojar tu archivo <code>resultados.json</code> en un repositorio de GitHub (o Gist público). La cartelera consultará ese enlace cada intervalo de tiempo y se actualizará sola sin recargar la pantalla.
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 140px auto; gap: 0.75rem; align-items: flex-end;">
+            <div class="form-group">
+              <label>URL del JSON Remoto</label>
+              <input type="url" id="input-sync-url" class="form-input" placeholder="https://raw.githubusercontent.com/.../resultados.json">
+            </div>
+            <div class="form-group">
+              <label>Sondeo (Segundos)</label>
+              <input type="number" id="input-sync-interval" class="form-input" min="10" max="600" value="30">
+            </div>
+            <button type="button" id="btn-save-settings" class="btn-primary">
+              Aplicar Enlace
+            </button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 3: GESTIÓN DE RESPALDOS Y NUEVO DÍA -->
+        <div class="admin-section">
+          <div class="admin-section-title">
+            <span>📁</span> Copias de Seguridad y Apertura de Jornada
+          </div>
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+            <button type="button" class="action-btn" id="btn-export-json">
+              💾 Descargar Respaldo JSON
+            </button>
+            <label class="action-btn" style="cursor: pointer;">
+              📥 Restaurar Copia JSON
+              <input type="file" id="file-import-json" accept=".json" style="display: none;">
+            </label>
+            <button type="button" class="btn-danger" id="btn-reset-day" style="margin-left: auto;">
+              🗑️ Iniciar Nuevo Día (Vaciar Pizarra)
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <span style="font-size: 0.78rem; color: var(--text-dim);">
+          Tip: En cualquier momento puedes hacer <strong>clic directo</strong> sobre cualquier casilla de número en la cartelera para editarla al instante.
+        </span>
+        <button type="button" class="action-btn" onclick="window.lotteryApp.closeAdminModal()">
+          Cerrar Panel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICACIÓN TOAST (ALERTA ELEGANTE) -->
+  <div class="toast-notice" id="toast-notice"></div>
+
+  <!-- SCRIPTS DE LA APLICACIÓN -->
+  <script src="js/lotteries-data.js"></script>
+  <script src="js/sync.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
