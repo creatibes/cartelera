@@ -154,14 +154,14 @@ function parseTuazarTriples(html, currentData) {
             if (matchHourSlot(time, targetSlot) || matchTripleTime(time, targetSlot)) {
               const overrideKeyA = `chance_en_linea:${targetSlot}:A`;
               const isOverriddenA = currentData.manualOverrides && currentData.manualOverrides[overrideKeyA];
-              if (!isOverriddenA && valA && currentData.chance_en_linea[targetSlot].A !== valA) {
+              if (!isOverriddenA && currentData.chance_en_linea[targetSlot].A !== valA) {
                 currentData.chance_en_linea[targetSlot].A = valA;
                 count++;
               }
 
               const overrideKeyB = `chance_en_linea:${targetSlot}:B`;
               const isOverriddenB = currentData.manualOverrides && currentData.manualOverrides[overrideKeyB];
-              if (!isOverriddenB && valB && currentData.chance_en_linea[targetSlot].B !== valB) {
+              if (!isOverriddenB && currentData.chance_en_linea[targetSlot].B !== valB) {
                 currentData.chance_en_linea[targetSlot].B = valB;
                 count++;
               }
@@ -215,7 +215,7 @@ function parseTuazarTriples(html, currentData) {
             if (matchHourSlot(time, targetSlot) || matchTripleTime(time, targetSlot)) {
               const overrideKeyC = `chance_en_linea:${targetSlot}:C`;
               const isOverriddenC = currentData.manualOverrides && currentData.manualOverrides[overrideKeyC];
-              if (!isOverriddenC && combined && currentData.chance_en_linea[targetSlot].C !== combined) {
+              if (!isOverriddenC && currentData.chance_en_linea[targetSlot].C !== combined) {
                 currentData.chance_en_linea[targetSlot].C = combined;
                 count++;
               }
@@ -746,20 +746,6 @@ function parseLoteriaDeHoyTriples(html, currentData) {
             }
           }
         }
-
-        // Chance en Línea (9:00 AM a 7:00 PM continuo)
-        if (currentData.chance_en_linea) {
-          for (const targetHour of Object.keys(currentData.chance_en_linea)) {
-            const hNum = rawTime.split(':')[0];
-            const ampm = rawTime.includes('PM') ? 'PM' : 'AM';
-            if (targetHour.startsWith(hNum + ':') && targetHour.includes(ampm)) {
-              const cur = currentData.chance_en_linea[targetHour];
-              if (valA && (!cur.A || cur.A === 'N/J' || cur.A === '--' || cur.A !== valA)) { cur.A = valA; count++; }
-              if (valB && (!cur.B || cur.B === 'N/J' || cur.B === '--' || cur.B !== valB)) { cur.B = valB; count++; }
-              if (valC && (!cur.C || cur.C === 'N/J' || cur.C === '--' || cur.C !== valC)) { cur.C = valC; count++; }
-            }
-          }
-        }
       }
     }
 
@@ -1071,7 +1057,7 @@ async function runScraper() {
       date: todayDate,
       agency: "Agencia de Loterías",
       triples: {
-        chance: { "1:00 PM": { A: "", B: "", C: "" }, "4:30 PM": { A: "", B: "", C: "" }, "7:00 PM": { A: "", B: "", C: "" } },
+        chance: { "9:00 AM": { A: "", B: "", C: "" }, "10:00 AM": { A: "", B: "", C: "" }, "11:00 AM": { A: "", B: "", C: "" }, "1:00 PM": { A: "", B: "", C: "" }, "4:30 PM": { A: "", B: "", C: "" }, "7:00 PM": { A: "", B: "", C: "" } },
         tachira: { "1:15 PM": { A: "", B: "", C: "" }, "4:45 PM": { A: "", B: "", C: "" }, "10:10 PM": { A: "", B: "", C: "" } },
         caracas: { "1:00 PM": { A: "", B: "", C: "" }, "4:30 PM": { A: "", B: "", C: "" }, "7:00 PM": { A: "", B: "", C: "" } },
         zulia: { "12:45 PM": { A: "", B: "", C: "" }, "4:45 PM": { A: "", B: "", C: "" }, "7:45 PM": { A: "", B: "", C: "" } },
@@ -1101,7 +1087,11 @@ async function runScraper() {
   // Asegurar estructura de triples
   if (currentData.triples) {
     if (!currentData.triples.chance) {
-      currentData.triples.chance = { "1:00 PM": { A: "", B: "", C: "" }, "4:30 PM": { A: "", B: "", C: "" }, "7:00 PM": { A: "", B: "", C: "" } };
+      currentData.triples.chance = {};
+    }
+    const chSlots = ["9:00 AM", "10:00 AM", "11:00 AM", "1:00 PM", "4:30 PM", "7:00 PM"];
+    for (const cs of chSlots) {
+      if (!currentData.triples.chance[cs]) currentData.triples.chance[cs] = { A: "", B: "", C: "" };
     }
     if (currentData.triples.caliente) {
       delete currentData.triples.caliente;

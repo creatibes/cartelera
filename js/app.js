@@ -269,7 +269,7 @@ class LotteryBillboardApp {
             ${lottery.fields.map(f => `<span>${f}</span>`).join('')}
           </div>
           ${lottery.draws.map(draw => {
-            const rowData = lotteryData[draw.time] || {};
+            const rowData = lotteryData[draw.time] || (isChance && this.currentData.chance_en_linea?.[draw.time]) || {};
             if (isZamorano) {
               const isNjA = rowData.A === 'N/J';
               const isNjB = rowData.B === 'N/J';

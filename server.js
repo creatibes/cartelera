@@ -383,4 +383,20 @@ server.listen(PORT, '0.0.0.0', () => {
   setInterval(() => {
     fetchOfficialBcvRate(true).catch(err => console.error('Error en ciclo de tasa BCV:', err));
   }, 10 * 60 * 1000);
+
+  // =========================================================================
+  // AUTO-KEEP-ALIVE: EVITA QUE RENDER SE DUERMA POR INACTIVIDAD
+  // =========================================================================
+  const renderExternalUrl = process.env.RENDER_EXTERNAL_URL || (process.env.NODE_ENV === 'production' ? 'https://cartelera-iynw.onrender.com' : null);
+  if (renderExternalUrl) {
+    console.log(`✓ Auto-Keep-Alive activado: haciendo ping cada 10 minutos a ${renderExternalUrl}`);
+    setInterval(async () => {
+      try {
+        await fetch(`${renderExternalUrl}/api/bcv-rate`);
+        console.log(`[Keep-Alive] Ping exitoso a ${renderExternalUrl} para mantener la instancia activa.`);
+      } catch (err) {
+        console.warn(`[Keep-Alive] Aviso ping:`, err.message);
+      }
+    }, 10 * 60 * 1000); // Cada 10 minutos (antes del límite de 15 min de Render)
+  }
 });

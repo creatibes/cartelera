@@ -139,9 +139,9 @@ const LOTTERIES_CONFIG = {
       color: "#f97316",
       accent: "rgba(249, 115, 22, 0.15)",
       draws: [
-        { time: "1:00 PM", label: "1:00 PM" },
-        { time: "4:30 PM", label: "4:30 PM" },
-        { time: "7:00 PM", label: "7:00 PM" }
+        { time: "9:00 AM", label: "9:00 AM" },
+        { time: "10:00 AM", label: "10:00 AM" },
+        { time: "11:00 AM", label: "11:00 AM" }
       ],
       fields: ["A", "B", "C (Signo)"]
     },
@@ -304,6 +304,9 @@ const INITIAL_DATA = {
   agency: "Agencia de Loterías",
   triples: {
     chance: {
+      "9:00 AM": { A: "", B: "", C: "" },
+      "10:00 AM": { A: "", B: "", C: "" },
+      "11:00 AM": { A: "", B: "", C: "" },
       "1:00 PM": { A: "", B: "", C: "" },
       "4:30 PM": { A: "", B: "", C: "" },
       "7:00 PM": { A: "", B: "", C: "" }
