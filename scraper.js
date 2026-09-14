@@ -1145,6 +1145,35 @@ async function scrapeHistoryDate(dateStr) {
   // Aplicar horarios de domingo antes del scraping
   applySundaySchedule(result, dateStr);
 
+  // 0. TuAzar (Ayer o Hoy) como fuente de alta velocidad y sin bloqueos de Datacenter
+  const todayStr = getCaracasDateStr();
+  const dToday = new Date(todayStr + 'T12:00:00Z');
+  dToday.setUTCDate(dToday.getUTCDate() - 1);
+  const yesterdayStr = dToday.toISOString().split('T')[0];
+  const isYesterday = (dateStr === yesterdayStr);
+
+  if (isYesterday || dateStr === todayStr) {
+    const tuazarTripUrl = isYesterday ? 'https://tuazar.com/loteria/resultados/ayer/' : 'https://tuazar.com/loteria/resultados/';
+    const tuazarAnimUrl = isYesterday ? 'https://tuazar.com/loteria/animalitos/resultados/ayer/' : 'https://tuazar.com/loteria/animalitos/resultados/';
+
+    try {
+      const htmlTrip = await fetchHtml(tuazarTripUrl);
+      if (htmlTrip) parseTuazarTriples(htmlTrip, result);
+    } catch (e) {
+      console.warn(`[HISTÓRICO] Error TuAzar triples para ${dateStr}:`, e.message);
+    }
+
+    try {
+      const htmlAnim = await fetchHtml(tuazarAnimUrl);
+      if (htmlAnim) {
+        parseTuazarAnimalitos(htmlAnim, result);
+        parseTuazarDoradoFacilRicachona(htmlAnim, result);
+      }
+    } catch (e) {
+      console.warn(`[HISTÓRICO] Error TuAzar animalitos para ${dateStr}:`, e.message);
+    }
+  }
+
   // 1. Obtener Triples y Chance en Línea desde LoteriaDeHoy
   try {
     const formBody = new URLSearchParams();
