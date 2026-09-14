@@ -1,0 +1,555 @@
+{
+  "updatedAt": "2026-09-14T03:10:13.896Z",
+  "date": "2026-09-04",
+  "agency": "Agencia de Loterías",
+  "triples": {
+    "chance": {
+      "1:00 PM": {
+        "A": "054",
+        "B": "245",
+        "C": "687 Can"
+      },
+      "4:30 PM": {
+        "A": "532",
+        "B": "358",
+        "C": "900 Gem"
+      },
+      "7:00 PM": {
+        "A": "160",
+        "B": "253",
+        "C": "442 Leo"
+      }
+    },
+    "tachira": {
+      "1:15 PM": {
+        "A": "021",
+        "B": "624",
+        "C": "752 Lib"
+      },
+      "4:45 PM": {
+        "A": "626",
+        "B": "275",
+        "C": "734 Leo"
+      },
+      "10:10 PM": {
+        "A": "516",
+        "B": "263",
+        "C": "031 Gem"
+      }
+    },
+    "caracas": {
+      "1:00 PM": {
+        "A": "811",
+        "B": "253",
+        "C": "245 PIS"
+      },
+      "4:30 PM": {
+        "A": "839",
+        "B": "382",
+        "C": "097 SAG"
+      },
+      "7:00 PM": {
+        "A": "980",
+        "B": "626",
+        "C": "531 TAU"
+      }
+    },
+    "zulia": {
+      "12:45 PM": {
+        "A": "300",
+        "B": "207",
+        "C": "832 Ari"
+      },
+      "4:45 PM": {
+        "A": "175",
+        "B": "182",
+        "C": "267 Gem"
+      },
+      "7:45 PM": {
+        "A": "839",
+        "B": "146",
+        "C": "079 Vir"
+      }
+    },
+    "zamorano": {
+      "12:00 PM": {
+        "A": "315",
+        "B": "209 Tau"
+      },
+      "2:00 PM": {
+        "A": "085",
+        "B": "950 Tau"
+      },
+      "4:00 PM": {
+        "A": "819",
+        "B": "763 Tau"
+      },
+      "7:00 PM": {
+        "A": "578",
+        "B": "164 Sag"
+      }
+    }
+  },
+  "chance_en_linea": {
+    "9:00 AM": {
+      "A": "395",
+      "B": "943",
+      "C": "250 Ari"
+    },
+    "10:00 AM": {
+      "A": "479",
+      "B": "114",
+      "C": "590 Gem"
+    },
+    "11:00 AM": {
+      "A": "501",
+      "B": "664",
+      "C": "720 Sag"
+    },
+    "12:00 PM": {
+      "A": "081",
+      "B": "239",
+      "C": "611 Acu"
+    },
+    "1:00 PM": {
+      "A": "054",
+      "B": "245",
+      "C": "687 Can"
+    },
+    "2:00 PM": {
+      "A": "819",
+      "B": "289",
+      "C": "457 Esc"
+    },
+    "3:00 PM": {
+      "A": "047",
+      "B": "107",
+      "C": "698 Cap"
+    },
+    "4:00 PM": {
+      "A": "532",
+      "B": "358",
+      "C": "900 Gem"
+    },
+    "5:00 PM": {
+      "A": "736",
+      "B": "993",
+      "C": "025 Sag"
+    },
+    "6:00 PM": {
+      "A": "561",
+      "B": "226",
+      "C": "476 Vir"
+    },
+    "7:00 PM": {
+      "A": "160",
+      "B": "253",
+      "C": "442 Leo"
+    }
+  },
+  "animalitos": {
+    "lotto_activo": {
+      "8:00 AM": {
+        "val": "15",
+        "label": "ZORRO"
+      },
+      "9:00 AM": {
+        "val": "07",
+        "label": "PERICO"
+      },
+      "10:00 AM": {
+        "val": "01",
+        "label": "CARNERO"
+      },
+      "11:00 AM": {
+        "val": "12",
+        "label": "CABALLO"
+      },
+      "12:00 PM": {
+        "val": "34",
+        "label": "VENADO"
+      },
+      "1:00 PM": {
+        "val": "12",
+        "label": "CABALLO"
+      },
+      "2:00 PM": {
+        "val": "27",
+        "label": "PERRO"
+      },
+      "3:00 PM": {
+        "val": "06",
+        "label": "RANA"
+      },
+      "4:00 PM": {
+        "val": "28",
+        "label": "ZAMURO"
+      },
+      "5:00 PM": {
+        "val": "25",
+        "label": "GALLINA"
+      },
+      "6:00 PM": {
+        "val": "07",
+        "label": "PERICO"
+      },
+      "7:00 PM": {
+        "val": "36",
+        "label": "CULEBRA"
+      }
+    },
+    "la_granjita": {
+      "8:00 AM": {
+        "val": "29",
+        "label": "ELEFANTE"
+      },
+      "9:00 AM": {
+        "val": "31",
+        "label": "LAPA"
+      },
+      "10:00 AM": {
+        "val": "23",
+        "label": "CEBRA"
+      },
+      "11:00 AM": {
+        "val": "02",
+        "label": "TORO"
+      },
+      "12:00 PM": {
+        "val": "12",
+        "label": "CABALLO"
+      },
+      "1:00 PM": {
+        "val": "11",
+        "label": "GATO"
+      },
+      "2:00 PM": {
+        "val": "27",
+        "label": "PERRO"
+      },
+      "3:00 PM": {
+        "val": "07",
+        "label": "PERICO"
+      },
+      "4:00 PM": {
+        "val": "01",
+        "label": "CARNERO"
+      },
+      "5:00 PM": {
+        "val": "22",
+        "label": "CAMELLO"
+      },
+      "6:00 PM": {
+        "val": "11",
+        "label": "GATO"
+      },
+      "7:00 PM": {
+        "val": "25",
+        "label": "GALLINA"
+      }
+    },
+    "selva_plus": {
+      "8:00 AM": "",
+      "9:00 AM": "",
+      "10:00 AM": "",
+      "11:00 AM": "",
+      "12:00 PM": "",
+      "1:00 PM": "",
+      "2:00 PM": "",
+      "3:00 PM": "",
+      "4:00 PM": "",
+      "5:00 PM": "",
+      "6:00 PM": "",
+      "7:00 PM": ""
+    },
+    "guacharo_millonario": {
+      "8:00 AM": {
+        "val": "13",
+        "label": "MONO"
+      },
+      "9:00 AM": {
+        "val": "37",
+        "label": "TORTUGA"
+      },
+      "10:00 AM": {
+        "val": "78",
+        "label": "ANTÍLOPE"
+      },
+      "11:00 AM": {
+        "val": "54",
+        "label": "GRILLO"
+      },
+      "12:00 PM": {
+        "val": "16",
+        "label": "OSO"
+      },
+      "1:00 PM": {
+        "val": "09",
+        "label": "ÁGUILA"
+      },
+      "2:00 PM": {
+        "val": "02",
+        "label": "TORO"
+      },
+      "3:00 PM": {
+        "val": "01",
+        "label": "CARNERO"
+      },
+      "4:00 PM": {
+        "val": "22",
+        "label": "CAMELLO"
+      },
+      "5:00 PM": {
+        "val": "74",
+        "label": "TURPIAL"
+      },
+      "6:00 PM": {
+        "val": "52",
+        "label": "PULPO"
+      },
+      "7:00 PM": {
+        "val": "45",
+        "label": "GARZA"
+      }
+    },
+    "monje": {
+      "8:00 AM": {
+        "val": "56",
+        "label": "TIBURON"
+      },
+      "9:00 AM": {
+        "val": "47",
+        "label": "PAVO REAL"
+      },
+      "10:00 AM": {
+        "val": "49",
+        "label": "PEREZA"
+      },
+      "11:00 AM": {
+        "val": "74",
+        "label": "TURPIAL"
+      },
+      "12:00 PM": {
+        "val": "63",
+        "label": "CANGREJO"
+      },
+      "1:00 PM": {
+        "val": "73",
+        "label": "HIPOPOTAMO"
+      },
+      "2:00 PM": {
+        "val": "17",
+        "label": "PAVO"
+      },
+      "3:00 PM": {
+        "val": "60",
+        "label": "CAMALEON"
+      },
+      "4:00 PM": {
+        "val": "29",
+        "label": "ELEFANTE"
+      },
+      "5:00 PM": {
+        "val": "31",
+        "label": "LAPA"
+      },
+      "6:00 PM": {
+        "val": "45",
+        "label": "GARZA"
+      },
+      "7:00 PM": {
+        "val": "20",
+        "label": "COCHINO"
+      }
+    },
+    "guacharo_activo": {
+      "8:00 AM": {
+        "val": "14",
+        "label": "PALOMA"
+      },
+      "9:00 AM": {
+        "val": "01",
+        "label": "CARNERO"
+      },
+      "10:00 AM": {
+        "val": "37",
+        "label": "TORTUGA"
+      },
+      "11:00 AM": {
+        "val": "36",
+        "label": "CULEBRA"
+      },
+      "12:00 PM": {
+        "val": "57",
+        "label": "PATO"
+      },
+      "1:00 PM": {
+        "val": "39",
+        "label": "LECHUZA"
+      },
+      "2:00 PM": {
+        "val": "55",
+        "label": "HORMIGUERO"
+      },
+      "3:00 PM": {
+        "val": "32",
+        "label": "ARDILLA"
+      },
+      "4:00 PM": {
+        "val": "51",
+        "label": "PELICANO"
+      },
+      "5:00 PM": {
+        "val": "29",
+        "label": "ELEFANTE"
+      },
+      "6:00 PM": {
+        "val": "01",
+        "label": "CARNERO"
+      },
+      "7:00 PM": {
+        "val": "68",
+        "label": "JAGUAR"
+      }
+    },
+    "el_ruco": {
+      "8:00 AM": {
+        "val": "38",
+        "label": "SAGITARIO"
+      },
+      "9:00 AM": {
+        "val": "47",
+        "label": "TAURO"
+      },
+      "10:00 AM": {
+        "val": "52",
+        "label": "ACUARIO"
+      },
+      "11:00 AM": {
+        "val": "80",
+        "label": "PISCIS"
+      },
+      "12:00 PM": {
+        "val": "98",
+        "label": "SAGITARIO"
+      },
+      "1:00 PM": {
+        "val": "43",
+        "label": "CÁNCER"
+      },
+      "2:00 PM": {
+        "val": "16",
+        "label": "ARIES"
+      },
+      "3:00 PM": {
+        "val": "62",
+        "label": "GÉMINIS"
+      },
+      "4:00 PM": {
+        "val": "76",
+        "label": "LEO"
+      },
+      "5:00 PM": {
+        "val": "90",
+        "label": "VIRGO"
+      },
+      "6:00 PM": {
+        "val": "29",
+        "label": "PISCIS"
+      },
+      "7:00 PM": {
+        "val": "54",
+        "label": "LIBRA"
+      }
+    },
+    "la_ruca": {
+      "8:00 AM": "N/J",
+      "9:00 AM": {
+        "val": "33",
+        "label": "GÉMINIS"
+      },
+      "10:00 AM": {
+        "val": "78",
+        "label": "ARIES"
+      },
+      "11:00 AM": {
+        "val": "12",
+        "label": "ACUARIO"
+      },
+      "12:00 PM": {
+        "val": "59",
+        "label": "VIRGO"
+      },
+      "1:00 PM": {
+        "val": "30",
+        "label": "CAPRICORNIO"
+      },
+      "2:00 PM": {
+        "val": "96",
+        "label": "TAURO"
+      },
+      "3:00 PM": {
+        "val": "20",
+        "label": "CÁNCER"
+      },
+      "4:00 PM": {
+        "val": "1",
+        "label": "LIBRA"
+      },
+      "5:00 PM": {
+        "val": "45",
+        "label": "LEO"
+      },
+      "6:00 PM": {
+        "val": "88",
+        "label": "ESCORPIO"
+      },
+      "7:00 PM": {
+        "val": "72",
+        "label": "PISCIS"
+      }
+    },
+    "el_dorado": {
+      "8:00 AM": "N/J",
+      "9:00 AM": "264",
+      "10:00 AM": "625",
+      "11:00 AM": "170",
+      "12:00 PM": "N/J",
+      "1:00 PM": "798",
+      "2:00 PM": "228",
+      "3:00 PM": "620",
+      "4:00 PM": "732",
+      "5:00 PM": "037",
+      "6:00 PM": "809",
+      "7:00 PM": "N/J"
+    },
+    "facil": {
+      "8:00 AM": "656",
+      "9:00 AM": "024",
+      "10:00 AM": "927",
+      "11:00 AM": "838",
+      "12:00 PM": "854",
+      "1:00 PM": "145",
+      "2:00 PM": "743",
+      "3:00 PM": "185",
+      "4:00 PM": "681",
+      "5:00 PM": "852",
+      "6:00 PM": "544",
+      "7:00 PM": "977"
+    },
+    "la_ricachona": {
+      "8:00 AM": "514",
+      "9:00 AM": "970",
+      "10:00 AM": "032",
+      "11:00 AM": "852",
+      "12:00 PM": "641",
+      "1:00 PM": "015",
+      "2:00 PM": "659",
+      "3:00 PM": "677",
+      "4:00 PM": "719",
+      "5:00 PM": "085",
+      "6:00 PM": "612",
+      "7:00 PM": "759"
+    }
+  }
+}

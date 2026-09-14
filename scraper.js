@@ -368,6 +368,162 @@ function parseTuazarDoradoFacilRicachona(html, currentData) {
 }
 
 // =========================================================================
+// 3.5 EXTRAER RESULTADOS HISTÓRICOS DESDE TABLAS SEMANALES DE TUAZAR
+// (semana / anteriores - Cero bloqueos de Datacenter en la nube)
+// =========================================================================
+function parseTuazarWeeklyTable(html, targetDateStr, result) {
+  if (!html || !targetDateStr) return 0;
+  let count = 0;
+
+  const [y, m, d] = targetDateStr.split('-');
+  const targetColDate = `${d}/${m}/${y}`;
+
+  const ANIMAL_MAP = {
+    'LOTTO ACTIVO': 'lotto_activo',
+    'LA GRANJITA': 'la_granjita',
+    'SELVA PLUS': 'selva_plus',
+    'GUACHARO ACTIVO': 'guacharo_activo',
+    'EL GUACHARITO MILLONARIO': 'guacharo_millonario',
+    'MONJE MILLONARIO': 'monje'
+  };
+
+  const TRIPLE_MAP = {
+    'TRIPLE ZULIA': 'zulia',
+    'TRIPLE CHANCE': 'chance',
+    'TRIPLE TÁCHIRA': 'tachira',
+    'TRIPLE ZAMORANO': 'zamorano'
+  };
+
+  const SPECIAL_MAP = {
+    'TRIPLE DORADO': 'el_dorado',
+    'TRIPLE FÁCIL': 'facil',
+    'LA RICACHONA': 'la_ricachona'
+  };
+
+  const tableRegex = /<h3 class=["'](?:lw-title|lc-title)["']>([^<]+)<\/h3>[\s\S]*?<table class=["']lw-table["']>([\s\S]*?)<\/table>/gi;
+  let match;
+
+  while ((match = tableRegex.exec(html)) !== null) {
+    const title = match[1].trim().toUpperCase();
+    const tableHtml = match[2];
+
+    const headerMatch = tableHtml.match(/<thead>([\s\S]*?)<\/thead>/i);
+    if (!headerMatch) continue;
+
+    const dayHeaders = [...headerMatch[1].matchAll(/<th[^>]*class=["'][^"']*lw-day[^"']*["'][^>]*>([\s\S]*?)<\/th>/gi)]
+      .map(m => {
+        const numMatch = m[1].match(/\b(\d{2}\/\d{2}\/\d{4})\b/);
+        return numMatch ? numMatch[1] : '';
+      });
+
+    const colIndex = dayHeaders.indexOf(targetColDate);
+    if (colIndex === -1) continue;
+
+    const bodyRows = [...tableHtml.matchAll(/<tr>([\s\S]*?)<\/tr>/gi)];
+    for (const row of bodyRows) {
+      const timeMatch = row[1].match(/<th[^>]*class=["'][^"']*lw-time[^"']*["'][^>]*>([\s\S]*?)<\/th>/i);
+      if (!timeMatch) continue;
+      const timeStr = timeMatch[1].replace(/<[^>]+>/g, '').trim();
+
+      const gameSubMatch = row[1].match(/<th[^>]*class=["'][^"']*lw-game[^"']*["'][^>]*>([\s\S]*?)<\/th>/i);
+      const gameSub = gameSubMatch ? gameSubMatch[1].replace(/<[^>]+>/g, '').trim().toUpperCase() : '';
+
+      const cells = [...row[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)];
+      if (colIndex < cells.length) {
+        const cellHtml = cells[colIndex][1];
+        if (cellHtml.includes('lw-empty') || cellHtml.trim() === '-') continue;
+
+        const numM = cellHtml.match(/<span class=["']lw-animal-num["']>([^<]+)<\/span>/i) || cellHtml.match(/<td>([^<]+)<\/td>/i);
+        const animalM = cellHtml.match(/<span class=["']lw-animal["']>([^<]+)<\/span>/i);
+
+        let val = '';
+        let label = '';
+        if (numM) {
+          val = numM[1].trim();
+          label = animalM ? animalM[1].trim().toUpperCase() : '';
+        } else {
+          val = cellHtml.replace(/<[^>]+>/g, '').trim();
+        }
+
+        if (!val || val === '-' || val === '--') continue;
+
+        // 1. Animalitos
+        if (ANIMAL_MAP[title] && result.animalitos && result.animalitos[ANIMAL_MAP[title]]) {
+          const gameId = ANIMAL_MAP[title];
+          const targetSlot = HORARIOS_ANIMALITOS.find(hh => matchHourSlot(timeStr, hh));
+          if (targetSlot) {
+            if (val.length === 1 && val !== '0') val = '0' + val;
+            result.animalitos[gameId][targetSlot] = { val, label };
+            count++;
+          }
+        }
+
+        // 2. Dorado, Fácil, Ricachona
+        if (SPECIAL_MAP[title] && result.animalitos && result.animalitos[SPECIAL_MAP[title]]) {
+          const gameId = SPECIAL_MAP[title];
+          const targetSlot = HORARIOS_ANIMALITOS.find(hh => matchHourSlot(timeStr, hh));
+          if (targetSlot) {
+            result.animalitos[gameId][targetSlot] = val;
+            count++;
+          }
+        }
+
+        // 3. Triples
+        if (TRIPLE_MAP[title] && result.triples && result.triples[TRIPLE_MAP[title]]) {
+          const lotId = TRIPLE_MAP[title];
+          for (const drawTime of Object.keys(result.triples[lotId])) {
+            if (matchHourSlot(timeStr, drawTime)) {
+              if (gameSub.includes('TRIPLE A') || gameSub.includes('SORTEO A') || gameSub === 'A') {
+                result.triples[lotId][drawTime].A = val;
+                count++;
+              } else if (gameSub.includes('TRIPLE B') || gameSub.includes('SORTEO B') || gameSub === 'B') {
+                result.triples[lotId][drawTime].B = val;
+                count++;
+              } else if (gameSub.includes('ZODIACO') || gameSub.includes('ASTRAL') || gameSub.includes('SIGNO') || gameSub.includes('ASTRO')) {
+                const combined = label ? `${val} ${label}` : val;
+                const field = (lotId === 'zamorano') ? 'B' : 'C';
+                result.triples[lotId][drawTime][field] = combined;
+                count++;
+              } else if (lotId === 'zamorano' && gameSub.includes('TRIPLE')) {
+                result.triples[lotId][drawTime].A = val;
+                count++;
+              }
+            }
+          }
+        }
+
+        // 4. Chance en Línea
+        if (title.includes('CHANCE EN LÍNEA') && result.chance_en_linea) {
+          for (const targetSlot of Object.keys(result.chance_en_linea)) {
+            if (matchHourSlot(timeStr, targetSlot)) {
+              if (gameSub.includes('CHANCE A') || gameSub.includes('A')) {
+                result.chance_en_linea[targetSlot].A = val;
+                count++;
+              } else if (gameSub.includes('CHANCE B') || gameSub.includes('B')) {
+                result.chance_en_linea[targetSlot].B = val;
+                count++;
+              }
+            }
+          }
+        }
+
+        if (title.includes('CHANCE ASTRAL') && result.chance_en_linea) {
+          for (const targetSlot of Object.keys(result.chance_en_linea)) {
+            if (matchHourSlot(timeStr, targetSlot)) {
+              const combined = label ? `${val} ${label}` : val;
+              result.chance_en_linea[targetSlot].C = combined;
+              count++;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return count;
+}
+
+// =========================================================================
 // 4. EXTRAER EL RUCO EN VIVO DESDE SU API OFICIAL (elruco.com.ve / latococa)
 // =========================================================================
 async function parseElRucoOficial(currentData) {
@@ -1174,6 +1330,25 @@ async function scrapeHistoryDate(dateStr) {
     } catch (e) {
       console.warn(`[HISTÓRICO] Error TuAzar animalitos para ${dateStr}:`, e.message);
     }
+  }
+
+  // 0.5. Consultar Tablas Semanales de TuAzar (Semana actual y Semana anterior - Cero bloqueos)
+  try {
+    const [htmlSemanaAnim, htmlSemanaTrips] = await Promise.all([
+      fetchHtml('https://tuazar.com/loteria/animalitos/resultados/semana/'),
+      fetchHtml('https://tuazar.com/loteria/resultados/semana/')
+    ]);
+    if (htmlSemanaAnim) parseTuazarWeeklyTable(htmlSemanaAnim, dateStr, result);
+    if (htmlSemanaTrips) parseTuazarWeeklyTable(htmlSemanaTrips, dateStr, result);
+
+    const [htmlAntAnim, htmlAntTrips] = await Promise.all([
+      fetchHtml('https://tuazar.com/loteria/animalitos/resultados/anteriores/'),
+      fetchHtml('https://tuazar.com/loteria/resultados/anteriores/')
+    ]);
+    if (htmlAntAnim) parseTuazarWeeklyTable(htmlAntAnim, dateStr, result);
+    if (htmlAntTrips) parseTuazarWeeklyTable(htmlAntTrips, dateStr, result);
+  } catch (e) {
+    console.warn(`[HISTÓRICO] Error TuAzar semanal para ${dateStr}:`, e.message);
   }
 
   // 1. Obtener Triples y Chance en Línea desde LoteriaDeHoy
