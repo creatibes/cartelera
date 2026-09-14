@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { runScraper, scrapeHistoryDate } = require('./scraper');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
