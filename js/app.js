@@ -601,12 +601,15 @@ class LotteryBillboardApp {
             }
 
             // Si es juego de animalitos, aplicar diccionario si no trajo nombre
-            if (val && g.type === 'animal' && ANIMALITOS_DICT[val]) {
-              const dictItem = ANIMALITOS_DICT[val];
-              if (!label) {
-                label = `${dictItem.icon} ${dictItem.name}`;
-              } else if (!label.includes(dictItem.icon)) {
-                label = `${dictItem.icon} ${label}`;
+            if (val && g.type === 'animal') {
+              const cleanVal = val.replace(/^0+/, '') || '0';
+              const dictItem = (typeof ANIMALITOS_DICT !== 'undefined') ? (ANIMALITOS_DICT[val] || ANIMALITOS_DICT[cleanVal] || ANIMALITOS_DICT['0' + cleanVal]) : null;
+              if (dictItem) {
+                if (!label) {
+                  label = `${dictItem.icon} ${dictItem.name}`;
+                } else if (!label.includes(dictItem.icon)) {
+                  label = `${dictItem.icon} ${label}`;
+                }
               }
             }
 

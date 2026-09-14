@@ -473,7 +473,7 @@ async function parseLaRucaOficial(currentData) {
 // 6. EXTRAER TRIPLE CARACAS EN VIVO DESDE SU API OFICIAL
 // (resultadostriplecaracas.com / 1:00 PM, 4:30 PM, 7:00 PM)
 // =========================================================================
-async function parseTripleCaracasOficial(currentData) {
+async function parseTripleCaracasOficial(currentData, targetDate = null) {
   try {
     const res = await fetch('https://www.resultadostriplecaracas.com/api/gaming/results/product', {
       method: 'POST',
@@ -486,7 +486,7 @@ async function parseTripleCaracasOficial(currentData) {
     let count = 0;
 
     const list = json.response || [];
-    const today = getCaracasDateStr();
+    const today = targetDate || getCaracasDateStr();
 
     for (const item of list) {
       if (!item.event_timestamp || !item.event_timestamp.seconds) continue;
@@ -1158,7 +1158,10 @@ async function scrapeHistoryDate(dateStr) {
 
     try {
       const htmlTrip = await fetchHtml(tuazarTripUrl);
-      if (htmlTrip) parseTuazarTriples(htmlTrip, result);
+      if (htmlTrip) {
+        parseTuazarTriples(htmlTrip, result);
+        parseTuazarDoradoFacilRicachona(htmlTrip, result);
+      }
     } catch (e) {
       console.warn(`[HISTÓRICO] Error TuAzar triples para ${dateStr}:`, e.message);
     }
@@ -1167,7 +1170,6 @@ async function scrapeHistoryDate(dateStr) {
       const htmlAnim = await fetchHtml(tuazarAnimUrl);
       if (htmlAnim) {
         parseTuazarAnimalitos(htmlAnim, result);
-        parseTuazarDoradoFacilRicachona(htmlAnim, result);
       }
     } catch (e) {
       console.warn(`[HISTÓRICO] Error TuAzar animalitos para ${dateStr}:`, e.message);
@@ -1236,9 +1238,7 @@ async function scrapeHistoryDate(dateStr) {
         const num = (pub.a?.nro) ? String(pub.a.nro).trim() : '';
         const zodiac = pub.zodiaco?.zodiaco ? pub.zodiaco.zodiaco.toUpperCase().trim() : '';
         if (num && timeText) {
-          const hNum = timeText.split(':')[0].replace(/^0/, '');
-          const ampm = timeText.toUpperCase().includes('PM') ? 'PM' : 'AM';
-          const targetH = HORARIOS_ANIMALITOS.find(hh => hh.startsWith(hNum + ':') && hh.endsWith(ampm));
+          const targetH = HORARIOS_ANIMALITOS.find(hh => matchHourSlot(timeText, hh));
           if (targetH && result.animalitos.el_ruco) {
             result.animalitos.el_ruco[targetH] = { val: num, label: zodiac };
           }
@@ -1263,9 +1263,7 @@ async function scrapeHistoryDate(dateStr) {
         const num = (pub.a?.nro) ? String(pub.a.nro).trim() : '';
         const zodiac = pub.zodiaco?.zodiaco ? pub.zodiaco.zodiaco.toUpperCase().trim() : '';
         if (num && timeText) {
-          const hNum = timeText.split(':')[0].replace(/^0/, '');
-          const ampm = timeText.toUpperCase().includes('PM') ? 'PM' : 'AM';
-          const targetH = HORARIOS_ANIMALITOS.find(hh => hh.startsWith(hNum + ':') && hh.endsWith(ampm));
+          const targetH = HORARIOS_ANIMALITOS.find(hh => matchHourSlot(timeText, hh));
           if (targetH && targetH !== '8:00 AM' && result.animalitos.la_ruca) {
             result.animalitos.la_ruca[targetH] = { val: num, label: zodiac };
           }
@@ -1276,7 +1274,14 @@ async function scrapeHistoryDate(dateStr) {
     console.warn(`[HISTÓRICO] La Ruca error en ${dateStr}:`, e.message);
   }
 
-  // 5. SELVA PLUS Oficial API (api.lotterly.co)
+  // 5. TRIPLE CARACAS Oficial API (resultadostriplecaracas.com)
+  try {
+    await parseTripleCaracasOficial(result, dateStr);
+  } catch(e) {
+    console.warn(`[HISTÓRICO] Caracas error en ${dateStr}:`, e.message);
+  }
+
+  // 6. SELVA PLUS Oficial API (api.lotterly.co)
   try {
     const resSelva = await fetch(`https://api.lotterly.co/v1/results/selva-plus/?exact_date=${dateStr}&extended=true`);
     if (resSelva.ok) {
