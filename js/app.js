@@ -29,6 +29,8 @@ class LotteryBillboardApp {
     this.autoRotateTriples = storedAuto !== null ? storedAuto === 'true' : true;
     this.autoRotateSeconds = parseInt(localStorage.getItem('auto_rotate_seconds'), 10) || 20;
     this.autoRotateTimer = null;
+    this.autoRotateElapsedMs = 0;
+    this.autoRotateStepMs = 100;
 
     // Fecha actualmente consultada (null = hoy en vivo)
     this.viewingDate = null;
@@ -406,6 +408,7 @@ class LotteryBillboardApp {
     const tabChance = document.getElementById('tab-triples-chance');
     const autoBtn = document.getElementById('btn-auto-rotate-triples');
     const gearBtn = document.getElementById('btn-auto-rotate-config');
+    const timerBar = document.getElementById('triples-timer-bar-wrapper');
 
     if (tabClasicos) {
       tabClasicos.addEventListener('click', () => {
@@ -416,6 +419,13 @@ class LotteryBillboardApp {
     if (tabChance) {
       tabChance.addEventListener('click', () => {
         this.switchTriplesView('chance');
+        this.restartAutoRotateTimer();
+      });
+    }
+    if (timerBar) {
+      timerBar.addEventListener('click', () => {
+        const nextView = this.activeTriplesView === 'clasicos' ? 'chance' : 'clasicos';
+        this.switchTriplesView(nextView);
         this.restartAutoRotateTimer();
       });
     }
@@ -430,6 +440,8 @@ class LotteryBillboardApp {
     this.updateAutoRotateUI();
     if (this.autoRotateTriples) {
       this.startAutoRotateTimer();
+    } else {
+      this.updateAutoRotateTimerBar(0, 0);
     }
   }
 
@@ -453,6 +465,11 @@ class LotteryBillboardApp {
       if (chanceCont) chanceCont.style.display = 'none';
       this.renderTriples();
     }
+
+    // Reiniciar inmediatamente la barra de tiempo para el nuevo sorteo
+    this.autoRotateElapsedMs = 0;
+    const totalMs = Math.max(5, this.autoRotateSeconds) * 1000;
+    this.updateAutoRotateTimerBar(0, totalMs);
   }
 
   updateAutoRotateUI() {
@@ -482,17 +499,27 @@ class LotteryBillboardApp {
       this.showToast(`Rotación automática activada (cada ${this.autoRotateSeconds}s)`, 'success');
     } else {
       this.stopAutoRotateTimer();
-      this.showToast('Rotación automática pausada', 'info');
+      this.updateAutoRotateTimerBar(0, 0);
+      this.showToast('Rotación automática pausada. Usa teclas [↑] o [↓] para alternar', 'info');
     }
   }
 
   startAutoRotateTimer() {
     this.stopAutoRotateTimer();
-    const intervalMs = Math.max(5, this.autoRotateSeconds) * 1000;
+    this.autoRotateElapsedMs = 0;
+    const totalMs = Math.max(5, this.autoRotateSeconds) * 1000;
+    this.updateAutoRotateTimerBar(0, totalMs);
+
     this.autoRotateTimer = setInterval(() => {
-      const nextView = this.activeTriplesView === 'clasicos' ? 'chance' : 'clasicos';
-      this.switchTriplesView(nextView);
-    }, intervalMs);
+      this.autoRotateElapsedMs += this.autoRotateStepMs;
+      this.updateAutoRotateTimerBar(this.autoRotateElapsedMs, totalMs);
+
+      if (this.autoRotateElapsedMs >= totalMs) {
+        this.autoRotateElapsedMs = 0;
+        const nextView = this.activeTriplesView === 'clasicos' ? 'chance' : 'clasicos';
+        this.switchTriplesView(nextView);
+      }
+    }, this.autoRotateStepMs);
   }
 
   stopAutoRotateTimer() {
@@ -505,6 +532,56 @@ class LotteryBillboardApp {
   restartAutoRotateTimer() {
     if (this.autoRotateTriples) {
       this.startAutoRotateTimer();
+    } else {
+      this.updateAutoRotateTimerBar(0, 0);
+    }
+  }
+
+  updateAutoRotateTimerBar(elapsedMs = 0, totalMs = 20000) {
+    const textEl = document.getElementById('triples-timer-text');
+    const fillEl = document.getElementById('triples-progress-fill');
+    const iconEl = document.getElementById('triples-timer-icon');
+    const wrapper = document.getElementById('triples-timer-bar-wrapper');
+    if (!wrapper) return;
+
+    if (!this.autoRotateTriples) {
+      if (textEl) {
+        textEl.innerHTML = `<span style="color: #94a3b8;">⏸️ Rotación en pausa</span> • <span style="color: #38bdf8; font-weight: 600;">Pulsa [↑] o [↓] para alternar</span>`;
+      }
+      if (fillEl) {
+        fillEl.style.width = '0%';
+      }
+      if (iconEl) iconEl.textContent = '⏸️';
+      wrapper.classList.add('paused');
+      return;
+    }
+
+    wrapper.classList.remove('paused');
+    const remainingMs = Math.max(0, totalMs - elapsedMs);
+    const remainingSec = Math.max(0, Math.ceil(remainingMs / 1000));
+    const pct = Math.min(100, Math.max(0, (elapsedMs / totalMs) * 100));
+
+    if (fillEl) {
+      fillEl.style.width = `${pct}%`;
+      if (this.activeTriplesView === 'clasicos') {
+        fillEl.style.background = 'linear-gradient(90deg, #f59e0b, #f97316)';
+        fillEl.style.boxShadow = '0 0 8px rgba(249, 115, 22, 0.6)';
+      } else {
+        fillEl.style.background = 'linear-gradient(90deg, #38bdf8, #f59e0b)';
+        fillEl.style.boxShadow = '0 0 8px rgba(245, 158, 11, 0.6)';
+      }
+    }
+
+    if (iconEl) {
+      iconEl.textContent = remainingSec <= 3 ? '⚡' : '⏳';
+    }
+
+    if (textEl) {
+      if (this.activeTriplesView === 'clasicos') {
+        textEl.innerHTML = `Mostrando Clásicos • Próximo cambio a <strong style="color: #fb923c;">⚡ Chance Completo</strong> en <span class="timer-countdown">${remainingSec}s</span>`;
+      } else {
+        textEl.innerHTML = `Mostrando Chance Completo • Próximo cambio a <strong style="color: #facc15;">⭐ Triples Clásicos</strong> en <span class="timer-countdown">${remainingSec}s</span>`;
+      }
     }
   }
 
@@ -1863,10 +1940,35 @@ class LotteryBillboardApp {
           this.switchTriplesView(this.activeTriplesView === 'clasicos' ? 'chance' : 'clasicos');
         }
       }
+      // Flechas Arriba / Abajo: Alternar pestaña entre Triples Clásicos y Chance Completo
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+        const modal = document.getElementById('admin-modal-overlay') || document.getElementById('admin-modal');
+        const isModalOpen = modal && modal.classList.contains('active');
+        if (!isModalOpen && activeTag !== 'input' && activeTag !== 'textarea' && activeTag !== 'select') {
+          e.preventDefault();
+
+          let targetView;
+          if (e.key === 'ArrowUp') {
+            // Flecha Arriba: ir a Triples Clásicos (o alternar si ya está en Clásicos)
+            targetView = (this.activeTriplesView === 'clasicos') ? 'chance' : 'clasicos';
+          } else {
+            // Flecha Abajo: ir a Chance Completo (o alternar si ya está en Chance)
+            targetView = (this.activeTriplesView === 'chance') ? 'clasicos' : 'chance';
+          }
+
+          this.switchTriplesView(targetView);
+          this.restartAutoRotateTimer();
+
+          const label = targetView === 'chance' ? '⚡ Chance Completo (9 AM - 7 PM)' : '⭐ Triples Clásicos';
+          const icon = e.key === 'ArrowUp' ? '↑' : '↓';
+          this.showToast(`${label} [Tecla ${icon}]`, 'info');
+        }
+      }
       // Flechas Izquierda / Derecha: Navegar histórico de resultados
       if (e.key === 'ArrowLeft') {
         const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
-        const modal = document.getElementById('admin-modal');
+        const modal = document.getElementById('admin-modal-overlay') || document.getElementById('admin-modal');
         const isModalOpen = modal && modal.classList.contains('active');
         if (!isModalOpen && activeTag !== 'input' && activeTag !== 'textarea' && activeTag !== 'select') {
           e.preventDefault();
@@ -1875,7 +1977,7 @@ class LotteryBillboardApp {
       }
       if (e.key === 'ArrowRight') {
         const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
-        const modal = document.getElementById('admin-modal');
+        const modal = document.getElementById('admin-modal-overlay') || document.getElementById('admin-modal');
         const isModalOpen = modal && modal.classList.contains('active');
         if (!isModalOpen && activeTag !== 'input' && activeTag !== 'textarea' && activeTag !== 'select') {
           e.preventDefault();
